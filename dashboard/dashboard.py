@@ -4,8 +4,13 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Judul dashboard
-st.title("Dashboard Analisis Data Bike Sharing 🚲")
-st.subheader("Data Harian & Per Jam - Capital Bikeshare Washington D.C.")
+st.title("Dashboard Analisis Penggunaan Sepeda 🚴‍♂️")
+st.subheader("Capital Bikeshare Washington D.C. | Data Harian & Per Jam")
+
+st.markdown("""
+Dashboard ini menyajikan analisis data peminjaman sepeda dari Capital Bikeshare di Washington D.C.  
+Gunakan filter musim dan dataset untuk mengeksplorasi tren pengguna casual & registered, serta pengaruh faktor lingkungan terhadap peminjaman sepeda.
+""")
 
 # Load data
 df_day = pd.read_csv('dashboard/day_clean.csv')
@@ -39,8 +44,26 @@ col1.metric("Total Peminjaman", total_peminjaman)
 col2.metric("Casual Users", casual_total)
 col3.metric("Registered Users", registered_total)
 
+# Insight Box Dinamis
+st.markdown("### 📌 Insight")
+if casual_total > registered_total:
+    st.info(f'Pada musim **{season_option}**, pengguna **casual** lebih banyak dibanding pengguna registered.')
+else:
+    st.success(f'Pada musim **{season_option}**, pengguna **registered** mendominasi peminjaman sepeda.')
+
+# Diagram Pie: Casual vs Registered di filter musim
+st.markdown("### 📊 Proporsi Pengguna Casual vs Registered")
+pie_labels = ['Casual', 'Registered']
+pie_sizes = [casual_total, registered_total]
+pie_colors = ['#3498db', '#e67e22']
+
+fig_pie, ax_pie = plt.subplots()
+ax_pie.pie(pie_sizes, labels=pie_labels, colors=pie_colors, autopct='%1.1f%%', startangle=90)
+ax_pie.axis('equal')
+st.pyplot(fig_pie)
+
 # Visualisasi: Peminjaman per Bulan / Jam
-st.write(f"### Jumlah Peminjaman Sepeda per Bulan/Jam di Musim {season_option}")
+st.markdown(f"### 📈 Jumlah Peminjaman Sepeda per Bulan/Jam di Musim {season_option}")
 
 if dataset_option == "Data Harian":
     group_col = 'mnth'
@@ -59,9 +82,6 @@ monthly_data.plot(
     color=['#3498db', '#e67e22']
 )
 
-for container in ax.containers:
-    ax.bar_label(container, fmt='%.0f', fontsize=9)
-
 plt.title(f'Perbandingan Casual & Registered per {xlabel} - {season_option}', fontsize=14, weight='bold')
 plt.xlabel(xlabel, fontsize=12)
 plt.ylabel('Jumlah Peminjaman', fontsize=12)
@@ -70,7 +90,7 @@ plt.xticks(rotation=0)
 st.pyplot(fig)
 
 # Visualisasi Korelasi Faktor Lingkungan
-st.write("### Korelasi Faktor Lingkungan dengan Jumlah Peminjaman")
+st.markdown("### 🔍 Korelasi Faktor Lingkungan dengan Jumlah Peminjaman")
 
 corr = filtered_df[['temp', 'atemp', 'hum', 'windspeed', 'cnt']].corr()
 
@@ -91,4 +111,5 @@ plt.xticks(fontsize=10, rotation=45)
 plt.yticks(fontsize=10)
 st.pyplot(fig2)
 
+# Footer
 st.caption('Dashboard by Syakib 🚴‍♂️')
