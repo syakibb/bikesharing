@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -52,10 +53,21 @@ else:
 monthly_data = filtered_df.groupby(group_col)[['casual', 'registered']].sum()
 
 fig, ax = plt.subplots(figsize=(10,6))
-monthly_data.plot(kind='bar', stacked=True, ax=ax)
-plt.title(f'Perbandingan Casual & Registered per {xlabel} - {season_option}')
-plt.xlabel(xlabel)
-plt.ylabel('Jumlah Peminjaman')
+monthly_data.plot(
+    kind='bar', 
+    stacked=True, 
+    ax=ax, 
+    color=['#3498db', '#e67e22']
+)
+
+for container in ax.containers:
+    ax.bar_label(container, fmt='%.0f', fontsize=9)
+
+plt.title(f'Perbandingan Casual & Registered per {xlabel} - {season_option}', fontsize=14, weight='bold')
+plt.xlabel(xlabel, fontsize=12)
+plt.ylabel('Jumlah Peminjaman', fontsize=12)
+plt.legend(['Casual', 'Registered'], fontsize=10)
+plt.xticks(rotation=0)
 st.pyplot(fig)
 
 # Visualisasi Korelasi Faktor Lingkungan
@@ -64,8 +76,20 @@ st.write("### Korelasi Faktor Lingkungan dengan Jumlah Peminjaman")
 corr = filtered_df[['temp', 'atemp', 'hum', 'windspeed', 'cnt']].corr()
 
 fig2, ax2 = plt.subplots(figsize=(8,6))
-sns.heatmap(corr, annot=True, cmap='coolwarm', ax=ax2)
-plt.title('Correlation Matrix')
+sns.heatmap(
+    corr,
+    annot=True,
+    cmap='YlGnBu',
+    linewidths=0.5,
+    linecolor='white',
+    square=True,
+    cbar_kws={"shrink": .5},
+    ax=ax2
+)
+
+plt.title('Matriks Korelasi Faktor Lingkungan dengan Jumlah Peminjaman', fontsize=14, weight='bold')
+plt.xticks(fontsize=10, rotation=45)
+plt.yticks(fontsize=10)
 st.pyplot(fig2)
 
 st.caption('Dashboard by Syakib 🚴‍♂️')
