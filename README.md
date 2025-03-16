@@ -1,5 +1,5 @@
 
-# 🚲 Project Analisis Data Bike Sharing
+# 🚲 Proyek Analisis Data Bike Sharing
 
 Repository ini berisi proyek analisis data yang dikerjakan oleh **Syakib Binnur** untuk submission kelas **Belajar Analisis Data dengan Python** di Dicoding.
 
