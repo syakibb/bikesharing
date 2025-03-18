@@ -75,8 +75,8 @@ Jalankan di **Jupyter Notebook** atau **Google Colab** (dengan upload folder ter
 
 ### 2. Jalankan Dashboard Streamlit di Lokal
 ```
-cd dashboard
-streamlit run dashboard.py
+cd submission
+streamlit run dashboard/dashboard.py
 ```
 
 Atau kunjungi **Dashboard Online di Streamlit Cloud**:  
